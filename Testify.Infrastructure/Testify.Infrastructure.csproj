@@ -29,4 +29,8 @@
     <ProjectReference Include="..\Testify.Core\Testify.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UnitOfWork\" />
+  </ItemGroup>
+
 </Project>
