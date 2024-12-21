@@ -4,5 +4,6 @@
     {
         IGenericRepository<T> EntityRepository { get; }
         Task CommitAsync();
+        void Rollback();
     }
 }

@@ -1,6 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
-using Testify.Core;
+using Testify.Infrastructure;
 
 namespace TestifyWebAPI
 {

@@ -5,11 +5,11 @@ namespace Testify.Infrastructure.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class, new()
 {
-    private readonly DbContext _db;
+    private readonly TestifyDbContext _db;
 
     private DbSet<T>? _dbTable = null;
 
-    public GenericRepository(DbContext context)
+    public GenericRepository(TestifyDbContext context)
     {
         _db = context;
         _dbTable = context.Set<T>();
@@ -36,10 +36,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, new()
     }
 
 
-    public async Task<IEnumerable<T>> GetAllAsync() => await _dbTable.ToListAsync() ?? new List<T>();
+    public async Task<IEnumerable<T>> GetAllAsync() => await _dbTable.AsNoTracking().ToListAsync() ?? new List<T>();
 
     public async Task<IEnumerable<T>> FindByFunctionAsync(Expression<Func<T, bool>> predicate) =>
-        await _dbTable.Where(predicate).ToListAsync() ?? new List<T>();
+        await _dbTable.Where(predicate).AsNoTracking().ToListAsync() ?? new List<T>();
 
     public async Task<T> FindByIdAsync(int id) => await _dbTable.FindAsync(id) ?? new T();
 }

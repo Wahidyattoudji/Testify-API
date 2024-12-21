@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Testify.Core.Models;
 
-namespace Testify.Core;
+namespace Testify.Infrastructure;
 
 public partial class TestifyDbContext : DbContext
 {
