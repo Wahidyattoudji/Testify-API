@@ -1,0 +1,6 @@
+@TestifyWebAPI_HostAddress = http://localhost:5162
+
+GET {{TestifyWebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

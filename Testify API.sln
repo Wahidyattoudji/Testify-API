@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35521.163 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestifyWebAPI", "TestifyWebAPI\TestifyWebAPI.csproj", "{CA9C4F5C-2905-4057-A6D2-55DB7576C398}"
+	ProjectSection(ProjectDependencies) = postProject
+		{16191A29-2485-489E-B828-97535D474AB2} = {16191A29-2485-489E-B828-97535D474AB2}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testify.Core", "Testify.Core\Testify.Core.csproj", "{CE0068F4-8B47-42CB-A9C2-F197B24A51F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testify.Infrastructure", "Testify.Infrastructure\Testify.Infrastructure.csproj", "{16191A29-2485-489E-B828-97535D474AB2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CE0068F4-8B47-42CB-A9C2-F197B24A51F1} = {CE0068F4-8B47-42CB-A9C2-F197B24A51F1}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA9C4F5C-2905-4057-A6D2-55DB7576C398}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA9C4F5C-2905-4057-A6D2-55DB7576C398}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA9C4F5C-2905-4057-A6D2-55DB7576C398}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA9C4F5C-2905-4057-A6D2-55DB7576C398}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE0068F4-8B47-42CB-A9C2-F197B24A51F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE0068F4-8B47-42CB-A9C2-F197B24A51F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE0068F4-8B47-42CB-A9C2-F197B24A51F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE0068F4-8B47-42CB-A9C2-F197B24A51F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16191A29-2485-489E-B828-97535D474AB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16191A29-2485-489E-B828-97535D474AB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16191A29-2485-489E-B828-97535D474AB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16191A29-2485-489E-B828-97535D474AB2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
