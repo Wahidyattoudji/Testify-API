@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
+using Testify.Core.Interfaces;
 using Testify.Infrastructure;
+using Testify.Infrastructure.UnitOfWork;
 
 namespace TestifyWebAPI
 {
@@ -14,6 +16,10 @@ namespace TestifyWebAPI
             builder.Services.AddDbContext<TestifyDbContext>(
                 options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
                 );
+
+
+            builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

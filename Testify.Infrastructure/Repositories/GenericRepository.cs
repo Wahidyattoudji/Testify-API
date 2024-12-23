@@ -5,15 +5,14 @@ namespace Testify.Infrastructure.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class, new()
 {
-    private readonly TestifyDbContext _db;
+    protected readonly TestifyDbContext _db;
 
-    private DbSet<T>? _dbTable = null;
+    protected DbSet<T>? _dbTable = null;
 
     public GenericRepository(TestifyDbContext context)
     {
         _db = context;
         _dbTable = context.Set<T>();
-
     }
 
     public async Task AddAsync(T entity)
@@ -21,9 +20,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, new()
         await _dbTable.AddAsync(entity);
     }
 
-    public async Task UpdateAsync(T entity)
+    public async Task AddRangeAsync(IEnumerable<T> entitys)
+    {
+        await _dbTable.AddRangeAsync(entitys);
+    }
+
+    public async Task<T> UpdateAsync(T entity)
     {
         _dbTable.Update(entity);
+        return entity;
     }
 
     public async Task DeleteAsync(int id)
@@ -35,11 +40,18 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, new()
         }
     }
 
-
     public async Task<IEnumerable<T>> GetAllAsync() => await _dbTable.AsNoTracking().ToListAsync() ?? new List<T>();
 
-    public async Task<IEnumerable<T>> FindByFunctionAsync(Expression<Func<T, bool>> predicate) =>
-        await _dbTable.Where(predicate).AsNoTracking().ToListAsync() ?? new List<T>();
+    public async Task<IEnumerable<T>> FindByFunctionAsync(Expression<Func<T, bool>> predicate, string[] includes = null)
+    {
+        IQueryable<T> query = _dbTable;
+
+        if (includes != null)
+            foreach (var incluse in includes)
+                query = query.Include(incluse);
+
+        return await query.Where(predicate).AsNoTracking().ToListAsync() ?? new List<T>();
+    }
 
     public async Task<T> FindByIdAsync(int id) => await _dbTable.FindAsync(id) ?? new T();
 }

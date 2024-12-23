@@ -1,27 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Testify.Core.Interfaces;
+using Testify.Core.Models;
 using Testify.Infrastructure.Repositories;
 namespace Testify.Infrastructure.UnitOfWork;
 
-public class UnitOfWork<T> : IUnitOfWork<T> where T : class, new()
+public class UnitOfWork : IUnitOfWork
 {
     private readonly TestifyDbContext _context;
 
-    private IGenericRepository<T> _entity;
+    public IUserRepository UserRepo { get; }
+    public IGenericRepository<Test> TestRepo { get; }
+    public IGenericRepository<Submission> SubmissionRepo { get; }
+    public IGenericRepository<SubmissionAnswer> SubmissionAnswerRepo { get; }
+    public IGenericRepository<Question> QuestionRepo { get; }
+    public IGenericRepository<QuestionOption> QuestionOptionRepo { get; }
+    public IGenericRepository<Evaluation> EvaluationRepo { get; }
+
 
     public UnitOfWork(TestifyDbContext context)
     {
         _context = context;
+        UserRepo = new UserRepository(_context);
+        TestRepo = new GenericRepository<Test>(_context);
+        SubmissionRepo = new GenericRepository<Submission>(_context);
+        SubmissionAnswerRepo = new GenericRepository<SubmissionAnswer>(_context);
+        QuestionRepo = new GenericRepository<Question>(_context);
+        QuestionOptionRepo = new GenericRepository<QuestionOption>(_context);
+        EvaluationRepo = new GenericRepository<Evaluation>(_context);
     }
 
-
-    public IGenericRepository<T> EntityRepository
-    {
-        get
-        {
-            return _entity ??= new GenericRepository<T>(_context);
-        }
-    }
 
     public async Task CommitAsync()
     {
