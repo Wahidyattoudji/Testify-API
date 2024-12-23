@@ -22,6 +22,9 @@ namespace TestifyWebAPI
 
 
             builder.Services.AddControllers();
+
+            builder.Services.AddCors(); // open the conection from othr networks
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -34,8 +37,11 @@ namespace TestifyWebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            //middlewares
 
             app.UseHttpsRedirection();
+
+            app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()); //allow the access to api from anywere 
 
             app.UseAuthorization();
 
