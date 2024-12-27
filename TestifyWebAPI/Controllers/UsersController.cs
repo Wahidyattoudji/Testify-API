@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Testify.Core.Models;
 using TestifyWebAPI.DTOs;
 using TestifyWebAPI.Enums;
@@ -9,15 +8,13 @@ namespace TestifyWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
 
-        public UserController(IUserService userService, IMapper mapper)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -73,7 +70,8 @@ namespace TestifyWebAPI.Controllers
 
             var newUser = await _userService.AddUser(user);
 
-            return Ok(newUser);
+            //return Ok(newUser);
+            return CreatedAtAction(nameof(GetUserByIdAsync), new { id = newUser.UserId }, newUser);
         }
 
         [HttpPut("{id}")]

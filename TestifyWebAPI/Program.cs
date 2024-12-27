@@ -23,7 +23,12 @@ namespace TestifyWebAPI
             builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddScoped<IUserService, UserService>();
-
+            builder.Services.AddScoped<ITestService, TestService>();
+            builder.Services.AddScoped<IQuestionService, QuestionService>();
+            builder.Services.AddScoped<IQuestionOptionService, QuestionOptionService>();
+            builder.Services.AddScoped<ISubmissionService, SubmissionService>();
+            builder.Services.AddScoped<ISubmissionAnswerService, SubmissionAnswerService>();
+            builder.Services.AddScoped<IEvaluationService, EvaluationService>();
 
 
             builder.Services.AddControllers();
