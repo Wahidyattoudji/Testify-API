@@ -35,20 +35,25 @@ public class UnitOfWork : IUnitOfWork
         await _context.SaveChangesAsync();
     }
 
-    public void Rollback()
+    public async Task Rollback()
     {
         foreach (var entry in _context.ChangeTracker.Entries())
         {
             switch (entry.State)
             {
                 case EntityState.Modified:
+                    // Revert changes for modified entities
                     entry.State = EntityState.Unchanged;
                     break;
+
                 case EntityState.Added:
+                    // Detach newly added entities to ignore them
                     entry.State = EntityState.Detached;
                     break;
+
                 case EntityState.Deleted:
-                    entry.Reload();
+                    // Reload the entity from the database to restore its state
+                    await entry.ReloadAsync();
                     break;
             }
         }

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Testify.Core.Interfaces;
 using Testify.Infrastructure;
 using Testify.Infrastructure.UnitOfWork;
+using TestifyWebAPI.Services;
+using TestifyWebAPI.Services.Contracts;
 
 namespace TestifyWebAPI
 {
@@ -20,8 +22,13 @@ namespace TestifyWebAPI
 
             builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+            builder.Services.AddScoped<IUserService, UserService>();
+
+
 
             builder.Services.AddControllers();
+
+            builder.Services.AddAutoMapper(typeof(Program));
 
             builder.Services.AddCors(); // open the conection from othr networks
 

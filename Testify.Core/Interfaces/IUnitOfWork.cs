@@ -13,6 +13,6 @@ namespace Testify.Core.Interfaces
         IGenericRepository<Evaluation> EvaluationRepo { get; }
 
         Task CommitAsync();
-        void Rollback();
+        Task Rollback();
     }
 }
