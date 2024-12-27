@@ -10,7 +10,7 @@ public partial class Test
 
     public int CreatedBy { get; set; }
 
-    public DateTime? CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
     [JsonIgnore]
     public virtual User CreatedByNavigation { get; set; } = null!;

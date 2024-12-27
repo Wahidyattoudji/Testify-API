@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Testify.Core.Models;
+﻿namespace Testify.Core.Models;
 
 public partial class QuestionOption
 {
@@ -13,6 +10,7 @@ public partial class QuestionOption
 
     public bool IsCorrect { get; set; }
 
+    //[JsonIgnore]
     public virtual Question Question { get; set; } = null!;
 
     public virtual ICollection<SubmissionAnswer> SubmissionAnswers { get; set; } = new List<SubmissionAnswer>();

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Testify.Core.Models;
+﻿namespace Testify.Core.Models;
 
 public partial class Question
 {
@@ -17,5 +14,6 @@ public partial class Question
 
     public virtual ICollection<SubmissionAnswer> SubmissionAnswers { get; set; } = new List<SubmissionAnswer>();
 
+    //[JsonIgnore]
     public virtual Test Test { get; set; } = null!;
 }
