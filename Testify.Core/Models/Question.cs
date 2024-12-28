@@ -1,4 +1,6 @@
-﻿namespace Testify.Core.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace Testify.Core.Models;
 
 public partial class Question
 {
@@ -14,6 +16,6 @@ public partial class Question
 
     public virtual ICollection<SubmissionAnswer> SubmissionAnswers { get; set; } = new List<SubmissionAnswer>();
 
-    //[JsonIgnore]
+    [JsonIgnore]
     public virtual Test Test { get; set; } = null!;
 }

@@ -10,7 +10,7 @@ public partial class Submission
 
     public int StudentId { get; set; }
 
-    public DateTime? SubmittedAt { get; set; }
+    public DateTime? SubmittedAt { get; set; } = DateTime.Now;
 
     public virtual ICollection<Evaluation> Evaluations { get; set; } = new List<Evaluation>();
 
@@ -19,5 +19,6 @@ public partial class Submission
 
     public virtual ICollection<SubmissionAnswer> SubmissionAnswers { get; set; } = new List<SubmissionAnswer>();
 
+    [JsonIgnore]
     public virtual Test Test { get; set; } = null!;
 }

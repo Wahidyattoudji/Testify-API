@@ -40,7 +40,20 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, new()
         }
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync() => await _dbTable.AsNoTracking().ToListAsync();
+    public async Task<IEnumerable<T>> GetAllAsync(string[] includes = null)
+    {
+        IQueryable<T> query = _dbTable;
+
+        if (includes != null)
+        {
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+        }
+
+        return await query.AsNoTracking().ToListAsync();
+    }
 
     public async Task<IEnumerable<T>> FindByFunctionAsync(Expression<Func<T, bool>> predicate, string[] includes = null)
     {

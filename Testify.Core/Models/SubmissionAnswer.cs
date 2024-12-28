@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Testify.Core.Models;
+﻿namespace Testify.Core.Models;
 
 public partial class SubmissionAnswer
 {

@@ -12,8 +12,8 @@ namespace TestifyWebAPI.DTOs
 
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
-        public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
+        public ICollection<Question> Questions { get; set; } = new List<Question>();
 
-        public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
+        public ICollection<Submission> Submissions { get; set; } = new List<Submission>();
     }
 }

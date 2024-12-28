@@ -9,7 +9,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly TestifyDbContext _context;
 
     public IUserRepository UserRepo { get; }
-    public IGenericRepository<Test> TestRepo { get; }
+    public ITestRepository TestRepo { get; }
     public IGenericRepository<Submission> SubmissionRepo { get; }
     public IGenericRepository<SubmissionAnswer> SubmissionAnswerRepo { get; }
     public IGenericRepository<Question> QuestionRepo { get; }
@@ -21,7 +21,7 @@ public class UnitOfWork : IUnitOfWork
     {
         _context = context;
         UserRepo = new UserRepository(_context);
-        TestRepo = new GenericRepository<Test>(_context);
+        TestRepo = new TestRepository(_context);
         SubmissionRepo = new GenericRepository<Submission>(_context);
         SubmissionAnswerRepo = new GenericRepository<SubmissionAnswer>(_context);
         QuestionRepo = new GenericRepository<Question>(_context);

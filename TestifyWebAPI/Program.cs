@@ -19,7 +19,6 @@ namespace TestifyWebAPI
                 options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
                 );
 
-
             builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddScoped<IUserService, UserService>();

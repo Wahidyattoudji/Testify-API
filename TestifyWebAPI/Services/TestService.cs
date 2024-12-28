@@ -15,7 +15,7 @@ public class TestService : ITestService
 
     public async Task<IEnumerable<Test>> GetAll()
     {
-        var Tests = await _unitOfWork.TestRepo.GetAllAsync();
+        var Tests = await _unitOfWork.TestRepo.GetAllAsync(new[] { "Questions"/*, "Submissions" */});
         return Tests.OrderBy(t => t.TestName);
     }
 

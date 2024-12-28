@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Testify.Core.Models;
+﻿namespace Testify.Core.Models;
 
 public partial class Evaluation
 {
@@ -13,7 +10,7 @@ public partial class Evaluation
 
     public string? Feedback { get; set; }
 
-    public DateTime? EvaluatedAt { get; set; }
+    public DateTime? EvaluatedAt { get; set; } = DateTime.Now;
 
     public virtual Submission Submission { get; set; } = null!;
 }

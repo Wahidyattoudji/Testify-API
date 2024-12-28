@@ -5,7 +5,7 @@ namespace Testify.Core.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IUserRepository UserRepo { get; }
-        IGenericRepository<Test> TestRepo { get; }
+        ITestRepository TestRepo { get; }
         IGenericRepository<Submission> SubmissionRepo { get; }
         IGenericRepository<SubmissionAnswer> SubmissionAnswerRepo { get; }
         IGenericRepository<Question> QuestionRepo { get; }

@@ -25,7 +25,22 @@ namespace TestifyWebAPI.Controllers
             {
                 return NotFound("No users found.");
             }
-            return Ok(users);
+
+            var usersDto = new List<UserDto>();
+
+            foreach (var user in users)
+            {
+                usersDto.Add(new UserDto
+                {
+                    Username = user.Username,
+                    Password = user.Password,
+                    FullName = user.FullName,
+                    Email = user.Email,
+                    Role = user.Role,
+                });
+            }
+
+            return Ok(usersDto);
         }
 
         [HttpGet("{id}")]
@@ -36,6 +51,14 @@ namespace TestifyWebAPI.Controllers
             {
                 return NotFound($"User with ID {id} not found.");
             }
+            var userDto = new UserDto
+            {
+                Username = user.Username,
+                Password = user.Password,
+                FullName = user.FullName,
+                Email = user.Email,
+                Role = user.Role,
+            };
             return Ok(user);
         }
 
@@ -67,11 +90,9 @@ namespace TestifyWebAPI.Controllers
                 Role = request.Role
             };
 
-
             var newUser = await _userService.AddUser(user);
 
-            //return Ok(newUser);
-            return CreatedAtAction(nameof(GetUserByIdAsync), new { id = newUser.UserId }, newUser);
+            return Ok(newUser);
         }
 
         [HttpPut("{id}")]
@@ -112,7 +133,7 @@ namespace TestifyWebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserAsync(int id, [FromBody] UserDto request)
+        public async Task<IActionResult> DeleteUserAsync(int id)
         {
             var deletedUser = await _userService.GetById(id);
 

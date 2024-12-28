@@ -10,7 +10,6 @@ public partial class QuestionOption
 
     public bool IsCorrect { get; set; }
 
-    //[JsonIgnore]
     public virtual Question Question { get; set; } = null!;
 
     public virtual ICollection<SubmissionAnswer> SubmissionAnswers { get; set; } = new List<SubmissionAnswer>();
