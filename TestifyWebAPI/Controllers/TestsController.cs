@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Testify.Core.DTOs.Test;
 using Testify.Core.Models;
 using TestifyWebAPI.DTOs;
 using TestifyWebAPI.Services.Contracts;
@@ -24,7 +25,30 @@ namespace TestifyWebAPI.Controllers
             {
                 return NotFound("No Test found.");
             }
-            return Ok(tests);
+
+            var testDto = new List<CreateTestDto>();
+
+            foreach (var test in tests)
+            {
+                testDto.Add(new CreateTestDto()
+                {
+
+                    TestName = test.TestName,
+                    CreatedAt = test.CreatedAt,
+                    CreatedBy = test.CreatedBy,
+                    Questions = test.Questions.Select(q => new QuestionDto
+                    {
+                        QuestionText = q.QuestionText,
+                        QuestionType = q.QuestionType,
+                        Options = q.QuestionOptions.Select(o => new OptionsDto
+                        {
+                            OptionText = o.OptionText,
+                            IsCorrect = o.IsCorrect
+                        }).ToList()
+                    }).ToList()
+                });
+            }
+            return Ok(testDto);
         }
 
         [HttpGet("{id}")]
@@ -38,7 +62,7 @@ namespace TestifyWebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTestAsync([FromBody] TestDto request)
+        public async Task<IActionResult> CreateTestAsync([FromBody] CreateTestDto request)
         {
             var Test = new Test()
             {
@@ -52,7 +76,7 @@ namespace TestifyWebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTestAsync(int id, [FromBody] TestDto request)
+        public async Task<IActionResult> UpdateTestAsync(int id, [FromBody] CreateTestDto request)
         {
             var test = await _testService.GetById(id);
 

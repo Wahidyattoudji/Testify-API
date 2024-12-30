@@ -34,6 +34,8 @@ namespace TestifyWebAPI
 
             builder.Services.AddAutoMapper(typeof(Program));
 
+
+
             builder.Services.AddCors(); // open the conection from othr networks
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

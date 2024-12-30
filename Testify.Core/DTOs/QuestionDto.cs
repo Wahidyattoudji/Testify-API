@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Testify.Core.Models;
 
 namespace TestifyWebAPI.DTOs
 {
@@ -12,8 +11,8 @@ namespace TestifyWebAPI.DTOs
         [Required]
         public string QuestionType { get; set; } = null!;
 
-        public ICollection<QuestionOption> QuestionOptions { get; set; } = new List<QuestionOption>();
+        public ICollection<OptionsDto> Options { get; set; } = new List<OptionsDto>();
 
-        public ICollection<SubmissionAnswer> SubmissionAnswers { get; set; } = new List<SubmissionAnswer>();
+        public ICollection<SubmissionAnswerDto> SubmissionAnswers { get; set; } = new List<SubmissionAnswerDto>();
     }
 }

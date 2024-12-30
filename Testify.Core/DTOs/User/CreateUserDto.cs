@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TestifyWebAPI.DTOs
+namespace Testify.Core.DTOs.User
 {
-    public class UserDto
+    public class CreateUserDto
     {
         [Required]
         public string Username { get; set; } = null!;

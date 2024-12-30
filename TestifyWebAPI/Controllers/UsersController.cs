@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Testify.Core.DTOs.User;
 using Testify.Core.Models;
-using TestifyWebAPI.DTOs;
 using TestifyWebAPI.Enums;
 using TestifyWebAPI.Services.Contracts;
 
@@ -26,11 +26,11 @@ namespace TestifyWebAPI.Controllers
                 return NotFound("No users found.");
             }
 
-            var usersDto = new List<UserDto>();
+            var usersDto = new List<CreateUserDto>();
 
             foreach (var user in users)
             {
-                usersDto.Add(new UserDto
+                usersDto.Add(new CreateUserDto
                 {
                     Username = user.Username,
                     Password = user.Password,
@@ -51,7 +51,7 @@ namespace TestifyWebAPI.Controllers
             {
                 return NotFound($"User with ID {id} not found.");
             }
-            var userDto = new UserDto
+            var userDto = new CreateUserDto
             {
                 Username = user.Username,
                 Password = user.Password,
@@ -63,7 +63,7 @@ namespace TestifyWebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUserAsync([FromBody] UserDto request)
+        public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserDto request)
         {
             var UsersList = await _userService.GetAll();
 
@@ -96,7 +96,7 @@ namespace TestifyWebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUserAsync(int id, [FromBody] UserDto request)
+        public async Task<IActionResult> UpdateUserAsync(int id, [FromBody] CreateUserDto request)
         {
             var existingUser = await _userService.GetById(id);
 

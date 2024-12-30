@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Testify.Core.Models;
+using TestifyWebAPI.DTOs;
 
 namespace Testify.Core.DTOs;
 
@@ -12,7 +12,7 @@ public class SubmissionDto
 
     public DateTime? SubmittedAt { get; set; }
 
-    public virtual ICollection<Evaluation> Evaluations { get; set; } = new List<Evaluation>();
+    public virtual ICollection<EvaluationDto> Evaluations { get; set; } = new List<EvaluationDto>();
 
-    public virtual ICollection<SubmissionAnswer> SubmissionAnswers { get; set; } = new List<SubmissionAnswer>();
+    public virtual ICollection<SubmissionAnswerDto> SubmissionAnswers { get; set; } = new List<SubmissionAnswerDto>();
 }

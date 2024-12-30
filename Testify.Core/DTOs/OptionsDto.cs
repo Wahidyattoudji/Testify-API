@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Testify.Core.Models;
 
 namespace TestifyWebAPI.DTOs
 {
@@ -12,6 +11,6 @@ namespace TestifyWebAPI.DTOs
         [Required]
         public bool IsCorrect { get; set; }
 
-        public ICollection<SubmissionAnswer> SubmissionAnswers { get; set; } = new List<SubmissionAnswer>();
+        public ICollection<SubmissionAnswerDto> SubmissionAnswer { get; set; } = new List<SubmissionAnswerDto>();
     }
 }

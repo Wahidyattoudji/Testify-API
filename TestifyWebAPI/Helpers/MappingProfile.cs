@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Testify.Core.DTOs.User;
 using Testify.Core.Models;
-using TestifyWebAPI.DTOs;
 
 namespace TestifyWebAPI.Helpers
 {
@@ -8,7 +8,7 @@ namespace TestifyWebAPI.Helpers
     {
         public MappingProfile()
         {
-            CreateMap<User, UserDto>();
+            CreateMap<User, CreateUserDto>();
         }
     }
 }
