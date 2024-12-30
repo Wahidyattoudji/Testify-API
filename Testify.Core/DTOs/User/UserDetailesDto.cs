@@ -11,10 +11,6 @@ namespace Testify.Core.DTOs.User
         public string Username { get; set; } = null!;
 
         [Required]
-        [MinLength(8)]
-        public string PasswordHash { get; set; } = null!;
-
-        [Required]
         public string FullName { get; set; } = null!;
 
         [Required]

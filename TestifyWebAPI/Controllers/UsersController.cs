@@ -26,14 +26,14 @@ namespace TestifyWebAPI.Controllers
                 return NotFound("No users found.");
             }
 
-            var usersDto = new List<CreateUserDto>();
+            var usersDto = new List<UserDetailesDto>();
 
             foreach (var user in users)
             {
-                usersDto.Add(new CreateUserDto
+                usersDto.Add(new UserDetailesDto
                 {
+                    Id = user.UserId,
                     Username = user.Username,
-                    Password = user.Password,
                     FullName = user.FullName,
                     Email = user.Email,
                     Role = user.Role,
@@ -42,6 +42,8 @@ namespace TestifyWebAPI.Controllers
 
             return Ok(usersDto);
         }
+
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserByIdAsync(int id)
@@ -62,38 +64,6 @@ namespace TestifyWebAPI.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserDto request)
-        {
-            var UsersList = await _userService.GetAll();
-
-            if (UsersList.Any(u => u.Username == request.Username))
-            {
-                return Conflict("Username is Already Exsist");
-            }
-            if (UsersList.Any(u => u.Email == request.Email))
-            {
-                return Conflict("Email is Already Exist");
-            }
-
-            if (!Enum.TryParse<Roles>(request.Role, out _))
-            {
-                return BadRequest("Role should be 'Teacher' or 'Student'");
-            }
-
-            var user = new User()
-            {
-                FullName = request.FullName,
-                Username = request.Username,
-                Password = request.Password,
-                Email = request.Email,
-                Role = request.Role
-            };
-
-            var newUser = await _userService.AddUser(user);
-
-            return Ok(newUser);
-        }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUserAsync(int id, [FromBody] CreateUserDto request)
@@ -145,6 +115,68 @@ namespace TestifyWebAPI.Controllers
             await _userService.DeleteUser(deletedUser.UserId);
 
             return Ok(deletedUser);
+        }
+
+
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto request)
+        {
+            var UsersList = await _userService.GetAll();
+
+            var ExistUser = UsersList
+                .FirstOrDefault(
+                u => u.Username.Equals(request.Username)
+                && u.Password.Equals(request.Password)
+                );
+
+            if (ExistUser == null)
+            {
+                return BadRequest("Wrong Username or Password");
+            }
+
+            var UserDto = new UserDetailesDto
+            {
+                FullName = ExistUser.FullName,
+                Username = ExistUser.Username,
+                Email = ExistUser.Email,
+                Role = ExistUser.Role,
+            };
+
+            return Ok(UserDto);
+        }
+
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register([FromBody] CreateUserDto request)
+        {
+            var UsersList = await _userService.GetAll();
+
+            if (UsersList.Any(u => u.Username == request.Username))
+            {
+                return Conflict("Username is Already Exsist");
+            }
+            if (UsersList.Any(u => u.Email == request.Email))
+            {
+                return Conflict("Email is Already Exist");
+            }
+
+            if (!Enum.TryParse<Roles>(request.Role, out _))
+            {
+                return BadRequest("Role should be 'Teacher' or 'Student'");
+            }
+
+            var user = new User()
+            {
+                FullName = request.FullName,
+                Username = request.Username,
+                Password = request.Password,
+                Email = request.Email,
+                Role = request.Role
+            };
+
+            var newUser = await _userService.AddUser(user);
+
+            return Ok(newUser);
         }
     }
 }
