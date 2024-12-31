@@ -9,7 +9,7 @@ namespace Testify.Infrastructure.Repositories
 
         public TestRepository(TestifyDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Test>> GetFullTestAsync(int id)
+        public async Task<IEnumerable<Test>> GetFullTestsAsync()
         {
             return await _dbTable
                 .Include(t => t.Questions)

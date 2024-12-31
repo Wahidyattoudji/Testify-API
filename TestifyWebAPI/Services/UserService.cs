@@ -1,4 +1,5 @@
-﻿using Testify.Core.Interfaces;
+﻿using Testify.Core.DTOs.User;
+using Testify.Core.Interfaces;
 using Testify.Core.Models;
 using TestifyWebAPI.Services.Contracts;
 
@@ -23,6 +24,21 @@ public class UserService : IUserService
     public async Task<IEnumerable<User>> GetAllStudents()
     {
         var students = await GetUsersByRole("student");
+
+        var usersDto = new List<UserDetailesDto>();
+
+        foreach (var user in students)
+        {
+            usersDto.Add(new UserDetailesDto
+            {
+                Id = user.UserId,
+                Username = user.Username,
+                FullName = user.FullName,
+                Email = user.Email,
+                Role = user.Role,
+            });
+        }
+
         return students.OrderBy(u => u.FullName);
     }
 

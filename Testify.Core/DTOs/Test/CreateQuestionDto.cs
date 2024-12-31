@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TestifyWebAPI.DTOs
+namespace Testify.Core.DTOs.Test
 {
-    public class QuestionDto
+    public class CreateQuestionDto
     {
         [Required]
         public int TestId { get; set; }
@@ -11,8 +11,6 @@ namespace TestifyWebAPI.DTOs
         [Required]
         public string QuestionType { get; set; } = null!;
 
-        public ICollection<OptionsDto> Options { get; set; } = new List<OptionsDto>();
-
-        public ICollection<SubmissionAnswerDto> SubmissionAnswers { get; set; } = new List<SubmissionAnswerDto>();
+        public ICollection<CreateOptionsDto> Options { get; set; } = new List<CreateOptionsDto>();
     }
 }

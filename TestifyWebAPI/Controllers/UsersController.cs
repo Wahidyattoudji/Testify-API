@@ -43,8 +43,6 @@ namespace TestifyWebAPI.Controllers
             return Ok(usersDto);
         }
 
-
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserByIdAsync(int id)
         {
@@ -63,7 +61,6 @@ namespace TestifyWebAPI.Controllers
             };
             return Ok(user);
         }
-
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUserAsync(int id, [FromBody] CreateUserDto request)
@@ -177,6 +174,58 @@ namespace TestifyWebAPI.Controllers
             var newUser = await _userService.AddUser(user);
 
             return Ok(newUser);
+        }
+
+        [HttpGet("Students")]
+        public async Task<IActionResult> GetAllStudents()
+        {
+            var students = await _userService.GetAllStudents();
+            if (students == null || !students.Any())
+            {
+                return NotFound("No Students found.");
+            }
+
+            var studentsDto = new List<StudentDto>();
+
+            foreach (var user in students)
+            {
+                studentsDto.Add(new StudentDto
+                {
+                    Id = user.UserId,
+                    Username = user.Username,
+                    FullName = user.FullName,
+                    Email = user.Email,
+                    Role = user.Role,
+                });
+            }
+
+            return Ok(studentsDto);
+        }
+
+        [HttpGet("Teachers")]
+        public async Task<IActionResult> GetAllTeachers()
+        {
+            var teachers = await _userService.GetAllTeachers();
+            if (teachers == null || !teachers.Any())
+            {
+                return NotFound("No Teachers found.");
+            }
+
+            var teachersDto = new List<TeacherDto>();
+
+            foreach (var user in teachers)
+            {
+                teachersDto.Add(new TeacherDto
+                {
+                    Id = user.UserId,
+                    Username = user.Username,
+                    FullName = user.FullName,
+                    Email = user.Email,
+                    Role = user.Role,
+                });
+            }
+
+            return Ok(teachersDto);
         }
     }
 }

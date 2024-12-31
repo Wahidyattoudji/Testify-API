@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Testify.Core.Models;
+﻿namespace Testify.Core.Models;
 
 public partial class Test
 {
@@ -12,7 +10,6 @@ public partial class Test
 
     public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
-    [JsonIgnore]
     public virtual User CreatedByNavigation { get; set; } = null!;
 
     public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
