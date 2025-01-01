@@ -33,23 +33,7 @@ namespace TestifyWebAPI.Controllers
 
             foreach (var test in tests)
             {
-                testDto.Add(new TestDetailesDto()
-                {
-                    Id = test.TestId,
-                    TestName = test.TestName,
-                    CreatedAt = test.CreatedAt,
-                    CreatedBy = test.CreatedBy,
-                    Questions = test.Questions.Select(q => new CreateQuestionDto
-                    {
-                        QuestionText = q.QuestionText,
-                        QuestionType = q.QuestionType,
-                        Options = q.QuestionOptions.Select(o => new CreateOptionsDto
-                        {
-                            OptionText = o.OptionText,
-                            IsCorrect = o.IsCorrect
-                        }).ToList()
-                    }).ToList()
-                });
+                testDto.Add(ToDto(test));
             }
             return Ok(testDto);
         }
@@ -95,7 +79,6 @@ namespace TestifyWebAPI.Controllers
                 });
             }
 
-            // إنشاء كائن الاختبار
             var test = new Test
             {
                 TestName = request.TestName,
@@ -104,7 +87,6 @@ namespace TestifyWebAPI.Controllers
                 Questions = questions // ربط الأسئلة بالاختبار
             };
 
-            // إضافة الاختبار عبر الخدمة
             var newTest = await _testService.AddTest(test);
 
             if (newTest == null)
@@ -112,7 +94,7 @@ namespace TestifyWebAPI.Controllers
                 return StatusCode(500, "Error while creating the test.");
             }
 
-            return Ok(newTest);
+            return Ok(ToDto(newTest));
         }
 
         [HttpPut("{id}")]
@@ -207,6 +189,31 @@ namespace TestifyWebAPI.Controllers
             await _testService.DeleteTest(deletedTest.TestId);
 
             return Ok(deletedTest);
+        }
+
+
+        private TestDetailesDto ToDto(Test test)
+        {
+            var testDetailsDto = new TestDetailesDto
+            {
+                TestId = test.TestId,
+                TestName = test.TestName,
+                CreatedBy = test.CreatedBy,
+                CreatedAt = (DateTime)test.CreatedAt,
+                Questions = test.Questions.Select(q => new QuestionDetailsDto
+                {
+                    QuestionId = q.QuestionId,
+                    QuestionText = q.QuestionText,
+                    QuestionType = q.QuestionType,
+                    Options = q.QuestionOptions.Select(o => new OptionDto
+                    {
+                        OptionId = o.OptionId,
+                        OptionText = o.OptionText,
+                        IsCorrect = o.IsCorrect
+                    }).ToList()
+                }).ToList()
+            };
+            return testDetailsDto;
         }
     }
 }
