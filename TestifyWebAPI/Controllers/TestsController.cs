@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Testify.Core.DTOs.Test;
+using Testify.Core.DTOs.Test.Create;
+using Testify.Core.DTOs.Test.Show;
 using Testify.Core.Models;
 using TestifyWebAPI.Services.Contracts;
 

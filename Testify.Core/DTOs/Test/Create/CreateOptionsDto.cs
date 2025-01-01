@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Testify.Core.DTOs.Test
+namespace Testify.Core.DTOs.Test.Create
 {
     public partial class CreateOptionsDto
     {
