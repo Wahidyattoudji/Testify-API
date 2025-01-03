@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Testify.Core.DTOs.Test.Show;
 using Testify.Core.DTOs.User;
 using Testify.Core.Models;
 using TestifyWebAPI.Enums;
@@ -222,6 +223,13 @@ namespace TestifyWebAPI.Controllers
                     FullName = user.FullName,
                     Email = user.Email,
                     Role = user.Role,
+                    Tests = user.Tests.Select(t => new TestDetailesDto
+                    {
+                        TestId = t.TestId,
+                        TestName = t.TestName,
+                        CreatedBy = t.CreatedBy,
+                        CreatedAt = (DateTime)t.CreatedAt,
+                    }).ToList()
                 });
             }
 
