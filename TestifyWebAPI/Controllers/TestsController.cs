@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Testify.Core.DTOs.Submit;
 using Testify.Core.DTOs.Test.Create;
 using Testify.Core.DTOs.Test.Show;
 using Testify.Core.Models;
@@ -12,12 +13,17 @@ namespace TestifyWebAPI.Controllers
     {
         private readonly ITestService _testService;
         private readonly IQuestionService questionService;
+        private readonly IUserService _userService;
+        private readonly ISubmissionService _submissionService;
+        private readonly ISubmissionAnswerService _submissionAnswerService;
 
-
-        public TestsController(ITestService testService, IQuestionService questionService)
+        public TestsController(ITestService testService, IQuestionService questionService, IUserService userService, ISubmissionService submissionService, ISubmissionAnswerService submissionAnswerService)
         {
             _testService = testService;
             this.questionService = questionService;
+            _userService = userService;
+            _submissionService = submissionService;
+            _submissionAnswerService = submissionAnswerService;
         }
 
         [HttpGet]
@@ -189,6 +195,38 @@ namespace TestifyWebAPI.Controllers
             await _testService.DeleteTest(deletedTest.TestId);
 
             return Ok(deletedTest);
+        }
+
+        [HttpPost("{testId}/submit")]
+        public async Task<IActionResult> SubmitTest(int testId, [FromBody] TestSubmissionDto request)
+        {
+
+            // إنشاء تقديم جديد
+            var submission = new Submission
+            {
+                TestId = testId,
+                StudentId = request.StudentId,
+                SubmittedAt = DateTime.Now
+            };
+
+            var newSubmission = await _submissionService.AddSubmission(submission);
+
+            // إضافة الإجابات
+            foreach (var answer in request.Answers)
+            {
+                foreach (var optionId in answer.SelectedOptions)
+                {
+                    var submissionAnswer = new SubmissionAnswer
+                    {
+                        SubmissionId = newSubmission.SubmissionId,
+                        QuestionId = answer.QuestionId,
+                        SelectedOptionId = optionId
+                    };
+                    await _submissionAnswerService.AddSubmissionAnswer(submissionAnswer);
+                }
+            }
+
+            return Ok(new { message = "Submission recorded successfully.", submissionId = newSubmission.SubmissionId });
         }
 
 
