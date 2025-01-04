@@ -135,6 +135,7 @@ namespace TestifyWebAPI.Controllers
 
             var UserDto = new UserDetailesDto
             {
+                Id = ExistUser.UserId,
                 FullName = ExistUser.FullName,
                 Username = ExistUser.Username,
                 Email = ExistUser.Email,
