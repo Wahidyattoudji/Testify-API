@@ -229,6 +229,14 @@ namespace TestifyWebAPI.Controllers
             return Ok(new { message = "Submission recorded successfully.", submissionId = newSubmission.SubmissionId });
         }
 
+        [HttpGet("Submitions")]
+        public async Task<IActionResult> Submitions()
+        {
+            var submitions = await _submissionService.GetAll();
+
+            return Ok(submitions);
+        }
+
         private TestDetailesDto ToDto(Test test)
         {
             var testDetailsDto = new TestDetailesDto

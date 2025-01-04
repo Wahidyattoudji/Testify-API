@@ -5,10 +5,19 @@ namespace Testify.Core.DTOs;
 
 public class SubmissionDto
 {
+
+    [Required]
+    public int submittionId { get; set; }
     [Required]
     public int TestId { get; set; }
     [Required]
     public int StudentId { get; set; }
+
+    public string testName { get; set; }
+    public string StudentName { get; set; }
+
+
+
 
     public DateTime? SubmittedAt { get; set; }
 
