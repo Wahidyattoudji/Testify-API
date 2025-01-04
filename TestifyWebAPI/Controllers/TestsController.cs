@@ -229,7 +229,6 @@ namespace TestifyWebAPI.Controllers
             return Ok(new { message = "Submission recorded successfully.", submissionId = newSubmission.SubmissionId });
         }
 
-
         private TestDetailesDto ToDto(Test test)
         {
             var testDetailsDto = new TestDetailesDto
