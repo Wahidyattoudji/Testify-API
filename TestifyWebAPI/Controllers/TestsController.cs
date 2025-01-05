@@ -187,7 +187,6 @@ namespace TestifyWebAPI.Controllers
             return Ok(updatedTest);
         }
 
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTestAsynv(int id)
         {
@@ -257,8 +256,6 @@ namespace TestifyWebAPI.Controllers
                 }
             });
         }
-
-
 
         [HttpGet("Submitions")]
         public async Task<IActionResult> Submitions()

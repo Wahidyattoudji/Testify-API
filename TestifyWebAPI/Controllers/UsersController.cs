@@ -207,6 +207,20 @@ namespace TestifyWebAPI.Controllers
                     FullName = user.FullName,
                     Email = user.Email,
                     Role = user.Role,
+                    Submissions = user.Submissions.Select(s => new Testify.Core.DTOs.SubmissionDto
+                    {
+                        StudentId = user.UserId,
+                        StudentName = user.FullName,
+                        TestId = s.TestId,
+                        SubmittedAt = s.SubmittedAt,
+                        Evaluations = s.Evaluations.Select(e => new DTOs.EvaluationDto
+                        {
+                            TotalScore = e.TotalScore,
+                            Feedback = e.Feedback,
+                            EvaluatedAt = e.EvaluatedAt,
+                            SubmissionId = e.SubmissionId
+                        }).ToList(),
+                    }).ToList(),
                 });
             }
 
