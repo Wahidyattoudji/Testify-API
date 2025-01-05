@@ -243,6 +243,7 @@ namespace TestifyWebAPI.Controllers
 
 
             await _dbcontext.Evaluations.AddAsync(evaluation);
+            await _dbcontext.SaveChangesAsync();
 
             //
             return Ok(new
