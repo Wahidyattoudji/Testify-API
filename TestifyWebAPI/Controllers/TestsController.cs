@@ -258,7 +258,7 @@ namespace TestifyWebAPI.Controllers
             return Ok(submitions);
         }
 
-        public async Task<int> CalculateTotalScoreAsync(int submissionId)
+        private async Task<int> CalculateTotalScoreAsync(int submissionId)
         {
             var submissionAnswers = await _dbcontext.SubmissionAnswers
                 .Include(sa => sa.SelectedOption)
