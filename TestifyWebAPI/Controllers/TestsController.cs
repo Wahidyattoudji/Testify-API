@@ -5,6 +5,7 @@ using Testify.Core.DTOs.Test.Create;
 using Testify.Core.DTOs.Test.Show;
 using Testify.Core.Models;
 using Testify.Infrastructure;
+using TestifyWebAPI.DTOs;
 using TestifyWebAPI.Services.Contracts;
 
 namespace TestifyWebAPI.Controllers
@@ -244,17 +245,27 @@ namespace TestifyWebAPI.Controllers
             await _dbcontext.Evaluations.AddAsync(evaluation);
             await _dbcontext.SaveChangesAsync();
 
-            //
-            return Ok(new
+            var EvDto = new EvaluationDto
             {
-                message = "Submission recorded and evaluated successfully.",
-                submissionId = newSubmission.SubmissionId,
-                evaluation = new
-                {
-                    totalScore = evaluation.TotalScore,
-                    feedback = evaluation.Feedback
-                }
-            });
+                EvaluationId = evaluation.EvaluationId,
+                EvaluatedAt = evaluation.EvaluatedAt,
+                TotalScore = evaluation.TotalScore,
+                Feedback = evaluation.Feedback,
+                SubmissionId = evaluation.SubmissionId
+            };
+
+            // return Ok(new
+            /* {
+                 message = "Submission recorded and evaluated successfully.",
+                 submissionId = newSubmission.SubmissionId,
+                 evaluation = new
+                 {
+                     totalScore = evaluation.TotalScore,
+                     feedback = evaluation.Feedback
+                 }
+             });*/
+
+            return Ok(EvDto);
         }
 
         [HttpGet("Submitions")]
@@ -300,7 +311,7 @@ namespace TestifyWebAPI.Controllers
                 TestName = test.TestName,
                 CreatedBy = test.CreatedBy,
                 CreatedAt = (DateTime)test.CreatedAt,
-                Questions = test.Questions.Select(q => new QuestionDetailsDto
+                Questions = test.Questions.Select(q => new Testify.Core.DTOs.Test.Show.QuestionDetailsDto
                 {
                     QuestionId = q.QuestionId,
                     QuestionText = q.QuestionText,

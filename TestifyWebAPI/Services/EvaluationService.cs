@@ -35,7 +35,7 @@ public class EvaluationService : IEvaluationService
         catch (Exception ex)
         {
             await _unitOfWork.Rollback();
-            throw new Exception("Error while adding a Evaluation", ex);
+            throw new Exception("Error while adding a EvaluationController", ex);
         }
     }
 
@@ -50,7 +50,7 @@ public class EvaluationService : IEvaluationService
         catch (Exception ex)
         {
             await _unitOfWork.Rollback();
-            throw new Exception("Error while updating a Evaluation", ex);
+            throw new Exception("Error while updating a EvaluationController", ex);
         }
     }
 
@@ -64,7 +64,7 @@ public class EvaluationService : IEvaluationService
         catch (Exception ex)
         {
             await _unitOfWork.Rollback();
-            throw new Exception("Error while Deleting a Evaluation", ex);
+            throw new Exception("Error while Deleting a EvaluationController", ex);
         }
     }
 

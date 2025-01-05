@@ -49,6 +49,14 @@ namespace TestifyWebAPI.Controllers
                     QuestionId = sa.QuestionId,
                     SelectedOptionId = sa.SelectedOptionId,
                 }).ToList(),
+                Evaluations = s.Evaluations.Select(ev => new EvaluationDto
+                {
+                    SubmissionId = ev.SubmissionId,
+                    TotalScore = ev.TotalScore,
+                    EvaluatedAt = ev.EvaluatedAt,
+                    EvaluationId = ev.EvaluationId,
+                    Feedback = ev.Feedback
+                }).ToList(),
             });
 
             return Ok(submissionDtos);

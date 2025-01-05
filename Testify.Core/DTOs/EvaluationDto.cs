@@ -4,6 +4,9 @@ namespace TestifyWebAPI.DTOs
 {
     public class EvaluationDto
     {
+
+        [Required]
+        public int EvaluationId { get; set; }
         [Required]
         public int SubmissionId { get; set; }
 
