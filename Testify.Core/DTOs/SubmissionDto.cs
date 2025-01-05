@@ -14,10 +14,8 @@ public class SubmissionDto
     public int StudentId { get; set; }
 
     public string testName { get; set; }
+
     public string StudentName { get; set; }
-
-
-
 
     public DateTime? SubmittedAt { get; set; }
 

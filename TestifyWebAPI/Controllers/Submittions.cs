@@ -21,7 +21,6 @@ namespace TestifyWebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllSubmissionsAsync()
         {
-            // جلب جميع التقديمات مع البيانات المرتبطة بها
             var submissions = await _dbContext.Submissions
                 .Include(s => s.Student)
                 .Include(s => s.Test)
@@ -29,15 +28,14 @@ namespace TestifyWebAPI.Controllers
                     .ThenInclude(sa => sa.Question)
                 .Include(s => s.SubmissionAnswers)
                     .ThenInclude(sa => sa.SelectedOption)
+                .Include(s => s.Evaluations)
                 .ToListAsync();
 
-            // التحقق إذا لم تكن هناك أي تقديمات
             if (!submissions.Any())
             {
                 return NotFound("No submissions found.");
             }
 
-            // تحويل البيانات إلى DTO
             var submissionDtos = submissions.Select(s => new SubmissionDto
             {
                 submittionId = s.SubmissionId,
@@ -50,10 +48,9 @@ namespace TestifyWebAPI.Controllers
                 {
                     QuestionId = sa.QuestionId,
                     SelectedOptionId = sa.SelectedOptionId,
-                }).ToList()
+                }).ToList(),
             });
 
-            // إعادة التقديمات في الرد
             return Ok(submissionDtos);
         }
 

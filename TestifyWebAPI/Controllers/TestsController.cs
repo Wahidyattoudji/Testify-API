@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Testify.Core.DTOs.Submit;
 using Testify.Core.DTOs.Test.Create;
 using Testify.Core.DTOs.Test.Show;
 using Testify.Core.Models;
+using Testify.Infrastructure;
 using TestifyWebAPI.Services.Contracts;
 
 namespace TestifyWebAPI.Controllers
@@ -16,14 +18,18 @@ namespace TestifyWebAPI.Controllers
         private readonly IUserService _userService;
         private readonly ISubmissionService _submissionService;
         private readonly ISubmissionAnswerService _submissionAnswerService;
+        private readonly TestifyDbContext _dbcontext;
 
-        public TestsController(ITestService testService, IQuestionService questionService, IUserService userService, ISubmissionService submissionService, ISubmissionAnswerService submissionAnswerService)
+        public TestsController(ITestService testService, IQuestionService questionService
+            , IUserService userService, ISubmissionService submissionService
+            , ISubmissionAnswerService submissionAnswerService, TestifyDbContext dbcontext)
         {
             _testService = testService;
             this.questionService = questionService;
             _userService = userService;
             _submissionService = submissionService;
             _submissionAnswerService = submissionAnswerService;
+            _dbcontext = dbcontext;
         }
 
         [HttpGet]
@@ -201,7 +207,6 @@ namespace TestifyWebAPI.Controllers
         public async Task<IActionResult> SubmitTest(int testId, [FromBody] TestSubmissionDto request)
         {
 
-            // إنشاء تقديم جديد
             var submission = new Submission
             {
                 TestId = testId,
@@ -211,7 +216,6 @@ namespace TestifyWebAPI.Controllers
 
             var newSubmission = await _submissionService.AddSubmission(submission);
 
-            // إضافة الإجابات
             foreach (var answer in request.Answers)
             {
                 foreach (var optionId in answer.SelectedOptions)
@@ -226,8 +230,25 @@ namespace TestifyWebAPI.Controllers
                 }
             }
 
+            /// evaluation 
+            var totalScore = await CalculateTotalScoreAsync(newSubmission.SubmissionId);
+
+            var evaluation = new Evaluation
+            {
+                SubmissionId = newSubmission.SubmissionId,
+                TotalScore = totalScore,
+                Feedback = totalScore >= 50 ? "Passed" : "Failed",
+                EvaluatedAt = DateTime.Now
+            };
+
+
+            await _dbcontext.Evaluations.AddAsync(evaluation);
+
+
             return Ok(new { message = "Submission recorded successfully.", submissionId = newSubmission.SubmissionId });
         }
+
+
 
         [HttpGet("Submitions")]
         public async Task<IActionResult> Submitions()
@@ -237,6 +258,33 @@ namespace TestifyWebAPI.Controllers
             return Ok(submitions);
         }
 
+        public async Task<int> CalculateTotalScoreAsync(int submissionId)
+        {
+            var submissionAnswers = await _dbcontext.SubmissionAnswers
+                .Include(sa => sa.SelectedOption)
+                .Include(sa => sa.Question)
+                    .ThenInclude(q => q.QuestionOptions)
+                .Where(sa => sa.SubmissionId == submissionId)
+                .ToListAsync();
+
+            if (!submissionAnswers.Any())
+                throw new Exception("No answers found for this submission.");
+
+            int correctAnswersCount = 0;
+
+            foreach (var answer in submissionAnswers)
+            {
+                if (answer.SelectedOption != null && answer.SelectedOption.IsCorrect)
+                {
+                    correctAnswersCount++;
+                }
+            }
+
+            int totalQuestions = submissionAnswers.Select(sa => sa.QuestionId).Distinct().Count();
+            int totalScore = (correctAnswersCount * 100) / totalQuestions;
+
+            return totalScore;
+        }
         private TestDetailesDto ToDto(Test test)
         {
             var testDetailsDto = new TestDetailesDto
