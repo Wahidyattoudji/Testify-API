@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Testify.Core.DTOs.Test.Show;
 using Testify.Core.DTOs.User;
 using Testify.Core.Models;
+using Testify.Infrastructure;
 using TestifyWebAPI.Enums;
 using TestifyWebAPI.Services.Contracts;
 
@@ -12,10 +14,12 @@ namespace TestifyWebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly TestifyDbContext testifyDb;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, TestifyDbContext testifyDb)
         {
             _userService = userService;
+            this.testifyDb = testifyDb;
         }
 
         [HttpGet]
@@ -181,7 +185,12 @@ namespace TestifyWebAPI.Controllers
         [HttpGet("Students")]
         public async Task<IActionResult> GetAllStudents()
         {
-            var students = await _userService.GetAllStudents();
+            var students = await testifyDb.Users
+                .Where(u => u.Role.Equals("Student"))
+                .Include(s => s.Submissions)
+                .ThenInclude(s => s.Evaluations)
+                .ToListAsync();
+
             if (students == null || !students.Any())
             {
                 return NotFound("No Students found.");

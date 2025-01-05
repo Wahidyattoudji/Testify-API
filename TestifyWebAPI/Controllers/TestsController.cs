@@ -245,7 +245,16 @@ namespace TestifyWebAPI.Controllers
             await _dbcontext.Evaluations.AddAsync(evaluation);
 
 
-            return Ok(new { message = "Submission recorded successfully.", submissionId = newSubmission.SubmissionId });
+            return Ok(new
+            {
+                message = "Submission recorded and evaluated successfully.",
+                submissionId = newSubmission.SubmissionId,
+                evaluation = new
+                {
+                    totalScore = evaluation.TotalScore,
+                    feedback = evaluation.Feedback
+                }
+            });
         }
 
 
