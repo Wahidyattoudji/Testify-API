@@ -331,7 +331,6 @@ namespace TestifyWebAPI.Controllers
             return totalScore;
         }
 
-
         private TestDetailesDto ToDto(Test test)
         {
             var testDetailsDto = new TestDetailesDto
