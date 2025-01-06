@@ -278,31 +278,60 @@ namespace TestifyWebAPI.Controllers
 
         private async Task<int> CalculateTotalScoreAsync(int submissionId)
         {
+            // Retrieve all submission answers with related data
             var submissionAnswers = await _dbcontext.SubmissionAnswers
                 .Include(sa => sa.SelectedOption)
                 .Include(sa => sa.Question)
-                    .ThenInclude(q => q.QuestionOptions)
+                    .ThenInclude(q => q.QuestionOptions) // Include all options for each question
                 .Where(sa => sa.SubmissionId == submissionId)
                 .ToListAsync();
 
             if (!submissionAnswers.Any())
                 throw new Exception("No answers found for this submission.");
 
-            int correctAnswersCount = 0;
+            int totalQuestions = submissionAnswers.Select(sa => sa.QuestionId).Distinct().Count();
+            int correctQuestionsCount = 0;
 
-            foreach (var answer in submissionAnswers)
+            // Group answers by question
+            var answersGroupedByQuestion = submissionAnswers
+                .GroupBy(sa => sa.QuestionId)
+                .ToList();
+
+            foreach (var group in answersGroupedByQuestion)
             {
-                if (answer.SelectedOption != null && answer.SelectedOption.IsCorrect)
+                var question = group.First().Question;
+
+                // Get all correct options for the question
+                var correctOptions = question.QuestionOptions.Where(o => o.IsCorrect).Select(o => o.OptionId).ToList();
+
+                // Get all selected options for the current question
+                var selectedOptions = group.Select(sa => sa.SelectedOptionId).Where(id => id != null).Cast<int>().ToList();
+
+                if (question.QuestionType == "Single Choice")
                 {
-                    correctAnswersCount++;
+                    // Single Choice: The answer is correct if only one option is selected and it's correct
+                    if (selectedOptions.Count == 1 && correctOptions.Contains(selectedOptions.First()))
+                    {
+                        correctQuestionsCount++;
+                    }
+                }
+                else if (question.QuestionType == "Multiple Choice")
+                {
+                    // Multiple Choice: The answer is correct if all correct options are selected and no extra options are selected
+                    if (!selectedOptions.Except(correctOptions).Any() && !correctOptions.Except(selectedOptions).Any())
+                    {
+                        correctQuestionsCount++;
+                    }
                 }
             }
 
-            int totalQuestions = submissionAnswers.Select(sa => sa.QuestionId).Distinct().Count();
-            int totalScore = (correctAnswersCount * 100) / totalQuestions;
+            // Calculate the total score
+            int totalScore = (correctQuestionsCount * 100) / totalQuestions;
 
             return totalScore;
         }
+
+
         private TestDetailesDto ToDto(Test test)
         {
             var testDetailsDto = new TestDetailesDto
