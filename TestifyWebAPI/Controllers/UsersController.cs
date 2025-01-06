@@ -191,6 +191,8 @@ namespace TestifyWebAPI.Controllers
                 .ThenInclude(s => s.Evaluations)
                 .ToListAsync();
 
+
+
             if (students == null || !students.Any())
             {
                 return NotFound("No Students found.");
@@ -212,6 +214,7 @@ namespace TestifyWebAPI.Controllers
                         StudentId = user.UserId,
                         StudentName = user.FullName,
                         TestId = s.TestId,
+                        testName = testifyDb.Tests.Find(s.TestId).TestName,
                         SubmittedAt = s.SubmittedAt,
                         Evaluations = s.Evaluations.Select(e => new DTOs.EvaluationDto
                         {
